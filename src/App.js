@@ -142,19 +142,7 @@ const Component = ({
     // ACTUALIZAR NODO REFERENCIA
     const beforeTranslate = e.drag.beforeTranslate;
 
-    var ancho 
-
-    if(e.direction[0] === 1 && (e.width + left >= parentBounds.width)){ 
-      ancho = parentBounds.width - left
-    } else if(e.direction[0] < 0 && (left > 0)) { 
-      ancho = e.width
-    } else {
-      ancho = e.width
-    }
-
-
-console.log(e.direction)
-    ref.current.style.width = `${ancho}px`;
+    ref.current.style.width = `${e.width}px`;
     ref.current.style.height = `${e.height}px`;
 
     let translateX = beforeTranslate[0];
@@ -166,7 +154,6 @@ console.log(e.direction)
       ...nodoReferencia,
       translateX,
       translateY,
-      width: ancho,
       top: top + translateY < 0 ? 0 : top + translateY,
       left: left + translateX < 0 ? 0 : left + translateX,
     });
