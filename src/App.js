@@ -6,21 +6,25 @@ const App = () => {
   const [selected, setSelected] = useState(null);
 
   const addMoveable = () => {
-    // Create a new moveable component and add it to the array
-    const COLORS = ["red", "blue", "yellow", "green", "purple"];
 
-    setMoveableComponents([
-      ...moveableComponents,
-      {
-        id: Math.floor(Math.random() * Date.now()),
-        top: 0,
-        left: 0,
-        width: 100,
-        height: 100,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        updateEnd: true
-      },
-    ]);
+    fetch('https://jsonplaceholder.typicode.com/photos')
+      .then(response => response.json())
+      .then(json => {
+        var photo = json[moveableComponents.length].url
+        setMoveableComponents([
+          ...moveableComponents,
+          {
+            id: Math.floor(Math.random() * Date.now()),
+            top: 0,
+            left: 0,
+            width: 100,
+            height: 100,
+            photo: photo,
+            updateEnd: true
+          },
+        ]);
+      })
+    // Create a new moveable component and add it to the array
   };
 
   const updateMoveable = (id, newComponent, updateEnd = false) => {
@@ -97,7 +101,7 @@ const Component = ({
   width,
   height,
   index,
-  color,
+  photo,
   id,
   setSelected,
   isSelected = false,
@@ -111,7 +115,7 @@ const Component = ({
     width,
     height,
     index,
-    color,
+    photo,
     id,
   });
 
@@ -136,7 +140,7 @@ const Component = ({
       left,
       width: newWidth,
       height: newHeight,
-      color,
+      photo,
     });
 
     // ACTUALIZAR NODO REFERENCIA
@@ -185,7 +189,7 @@ const Component = ({
         left: absoluteLeft,
         width: newWidth,
         height: newHeight,
-        color,
+        photo,
       },
       true
     );
@@ -210,7 +214,7 @@ const Component = ({
       return(left)
     }
   }
-
+console.log(photo)
   return (
     <>
       <div
@@ -223,7 +227,7 @@ const Component = ({
           left: left,
           width: width,
           height: height,
-          background: color,
+          background: `no-repeat url(${photo})`
         }}
         onClick={() => setSelected(id)}
       />
@@ -238,7 +242,7 @@ const Component = ({
             left: calcDragLeft(e.left),
             width,
             height,
-            color,
+            photo,
           });
         }}
         onResize={onResize}
